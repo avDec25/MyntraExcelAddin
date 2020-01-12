@@ -1,16 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MyntraExcelAddin.Entity
 {
-    class Handover
+    public class Handover
     {
         public Handover()
         {
             fabrics = new List<Fabric>();
+            bmTarget = 0;
         }
         public String vanId;
         public String brand;

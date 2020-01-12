@@ -5,23 +5,31 @@ using Excel = Microsoft.Office.Interop.Excel;
 using MyntraExcelAddin.Service;
 using MyntraExcelAddin.SystemObjects;
 using MyntraExcelAddin.Entity;
+using System.Windows.Forms;
 
 namespace MyntraExcelAddin
 {
-    public partial class MainRibbon
+    public partial class MainRibbon : IDisposable
     {
         public Excel._Workbook xlWorkbook;
         public Excel._Worksheet syssheet;
         public Excel._Worksheet sheet;
-        public ExternalServiceMessenger messenger;        
+        public SheetDecorator decorator;
+        public ExternalServiceMessenger messenger;
+        public Excel.Application app;
+        DataExtractor extractor;
+        DataValidator validator;
+        EventManagement eventmanager;
 
         public void MainRibbon_Load(object sender, RibbonUIEventArgs e)
         {
-            messenger = new ExternalServiceMessenger();
+            messenger = new ExternalServiceMessenger();            
+            //app = Globals.ThisAddIn.Application;            
+            //app.SheetActivate += new Excel.AppEvents_SheetActivateEventHandler(Application_SheetActivate);
         }
 
         private void GetTemplate_Click(object sender, RibbonControlEventArgs e)
-        {            
+        {
             xlWorkbook = Globals.ThisAddIn.Application.ActiveWorkbook;
             // deletes all unnecessary sheets
             try
@@ -37,18 +45,25 @@ namespace MyntraExcelAddin
                 sheet = xlWorkbook.Worksheets.Add();
                 syssheet.Visible = Excel.XlSheetVisibility.xlSheetHidden;
             }
+            decorator = new SheetDecorator(messenger, sheet, syssheet);
+            validator = new DataValidator(sheet, messenger, decorator);
+            extractor = new DataExtractor(sheet, validator);
+            eventmanager = new EventManagement(sheet, messenger);
+            
+            Validate.Enabled = true;
+            UploadSheet.Enabled = true;
+            // GetTemplate.Enabled = false;
 
-            SheetDecorator decorator = new SheetDecorator(messenger, sheet,syssheet);
             decorator.SetDropDowns();
             decorator.GenerateHeader();
 
-            Validate.Enabled = true;
-            UploadSheet.Enabled = true;
-            GetTemplate.Enabled = false;
+            //emanager.SetEventHandlers();
         }
 
         private void Validate_Click(object sender, RibbonControlEventArgs e)
         {
+            NotificationService notify = new NotificationService();
+
             Excel.Range last = sheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
             Excel.Range range = sheet.get_Range("A1", last);
             int lastUsedRow = last.Row;
@@ -58,20 +73,17 @@ namespace MyntraExcelAddin
             {
                 rows.Add(i);
             }
-
-            DataExtractor extractor = new DataExtractor(sheet);
+            
             List<Handover> handoverlist = extractor.ExtractHandovers(rows);
-
-            NotificationService notify = new NotificationService();
-
-            //if (handoverlist == null) { 
-            //    return; 
-            //}
-
             notify.ValidationComplete();
 
-            //DataValidator validator = new DataValidator(sheet);
-            //var handoverReport = validator.ValidateHandovers(handoverlist);
+            if (handoverlist == null)
+            {
+                return;
+            }
+            
+            validator.ValidateHandovers(handoverlist);
+            notify.ValidationComplete();
         }
     }
 }

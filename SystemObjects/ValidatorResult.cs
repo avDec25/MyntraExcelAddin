@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace MyntraExcelAddin.SystemObjects
 {
-    class ValidatorResult
+    public class ValidatorResult
     {
-        public Boolean hasErrors;
+        public Boolean allok;
         public Dictionary<String, Boolean> isValid;
     }
 }

@@ -4,27 +4,26 @@ using MyntraExcelAddin.Entity;
 using MyntraExcelAddin.SystemObjects;
 using MyntraExcelAddin.Constant;
 using Excel = Microsoft.Office.Interop.Excel;
+using Newtonsoft.Json;
 
 namespace MyntraExcelAddin.Service
 {
     class DataValidator
     {
         Excel._Worksheet sheet;
-        public DataValidator(Excel._Worksheet sheet)
+        public ExternalServiceMessenger messenger;
+        public SheetDecorator decorator;
+
+        public DataValidator(Excel._Worksheet sheet, ExternalServiceMessenger messenger, SheetDecorator decorator)
         {
             this.sheet = sheet;
+            this.messenger = messenger;
+            this.decorator = decorator;
         }
 
         public Boolean IsEmptyCell(int r, int c)
         {
             return (sheet.Cells[r, c] == null || sheet.Cells[r, c].Value2 == null || sheet.Cells[r, c].Value2.ToString() == "");
-        }
-
-        public List<ValidatorResult> ValidateHandovers(List<int> rows)
-        {
-            //List<ValidatorResult> result = new List<ValidatorResult>();
-            throw new NotImplementedException();
-            //return result;
         }
 
         public Boolean HasEmptyCells(int row)
@@ -166,9 +165,9 @@ namespace MyntraExcelAddin.Service
             if (IsEmptyCell(row, ColumnNumber.mrpRange)) {
                 emptycols.Add(ColumnNumber.mrpRange);
             }
-            if (IsEmptyCell(row, ColumnNumber.bmTarget)) {
-                emptycols.Add(ColumnNumber.bmTarget);
-            }
+            //if (IsEmptyCell(row, ColumnNumber.bmTarget)) {
+            //    emptycols.Add(ColumnNumber.bmTarget);
+            //}
             if (IsEmptyCell(row, ColumnNumber.sizeType)) {
                 emptycols.Add(ColumnNumber.sizeType);
             }
@@ -198,11 +197,65 @@ namespace MyntraExcelAddin.Service
             return (emptycols.Count == 0) ? false : true;
         }
 
-        public List<ValidatorResult> ValidateHandovers(List<Handover> handoverlist)
+        public void ValidateHandovers(List<Handover> handoverlist)
         {
-            List<ValidatorResult> result = new List<ValidatorResult>();
-            throw new NotImplementedException();
-            return result;
+            List<ValidatorResult> result = messenger.GetValidationInfo(handoverlist);            
+            int row = 2;
+            foreach(ValidatorResult vr in result)
+            {
+                System.Diagnostics.Debug.WriteLine(JsonConvert.SerializeObject(vr.isValid, Formatting.Indented));
+                if (!vr.allok)
+                {
+                    if(vr.isValid.ContainsKey("sizetype") == true && !vr.isValid["sizetype"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.sizeType, "Rejected value of Sizetype");
+                    }
+                    if (vr.isValid.ContainsKey("bag") == true && !vr.isValid["bag"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.brand, "Rejected Value by Validation Master BAG; " +
+                            "Please correct Brand, Article Type and Gender Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.articleType, "Rejected Value by Validation Master BAG; " +
+                            "Please correct Brand, Article Type and Gender Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.gender, "Rejected Value by Validation Master BAG; " +
+                            "Please correct Brand, Article Type and Gender Combination.");
+                    }
+                    if (vr.isValid.ContainsKey("quantity") == true && !vr.isValid["quantity"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.quantity, "Rejected Value by Validation Master MoQ; " +
+                            "Please correct Brand, Article Type, Gender, Subcategory and Quantity Combination.");
+                    }
+                    if (vr.isValid.ContainsKey("cluster") == true && !vr.isValid["cluster"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.cluster, "Rejected Value by Validation Master Cluster; " +
+                            "Please correct Gender and Cluster Combination.");
+                    }
+                    if (vr.isValid.ContainsKey("subcategory") == true && !vr.isValid["subcategory"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.subcategory, "Rejected Value by Validation Master Subcategory; " +
+                            "Please correct Brand, Article Type, Gender and Subcategory Combination.");
+                    }
+                    if (vr.isValid.ContainsKey("bmtarget") == true && !vr.isValid["bmtarget"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.bmTarget, "Rejected Value by Validation Master BmTarget; " +
+                            "Please correct Brand, Article Type, Gender, Repeated and BM Target Combination.");
+                    }
+                    if (vr.isValid.ContainsKey("bodycode") == true && !vr.isValid["bodycode"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.bodyCode, "Rejected Value by Validation Master BodyCode; " +
+                            "Please correct Article Type, Gender and BodyCode Combination.");
+                    }
+                    if (vr.isValid.ContainsKey("color") == true && !vr.isValid["color"])
+                    {
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.color, "Rejected Value by Validation Master Color; " +
+                            "Please correct Gender and Color Combination.");
+                    }
+
+                } else
+                {
+                    decorator.ClearAllErrors(row);
+                }
+                ++row;
+            }
         }
     }
 }

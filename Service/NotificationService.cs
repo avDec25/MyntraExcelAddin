@@ -11,11 +11,10 @@ namespace MyntraExcelAddin.Service
         public void NotifyForEmptyCells(int row, List<int> cols)
         {
             String emptycols = "";
-            String sep = "";
+            String sep = "\n";
             foreach(int i in cols)
             {
-                emptycols += sep + Header.Name[i];
-                sep = "\n";
+                emptycols += sep + Header.Name[i];                
             }
 
             if (cols.Count != 0)

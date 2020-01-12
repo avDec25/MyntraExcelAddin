@@ -5,7 +5,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 
 namespace MyntraExcelAddin.Service
 {
-    class SheetDecorator
+    public class SheetDecorator
     {
         public Excel._Worksheet sheet;
         public Excel._Worksheet syssheet;
@@ -15,6 +15,39 @@ namespace MyntraExcelAddin.Service
             messenger = msngr;
             sheet = xlsheet;
             syssheet = systemsheet;
+        }
+
+        public void HighlightErrorAtCell(int row, int col, string message)
+        {
+            sheet.Cells[row, col].Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.FromArgb(255, 148, 148));
+            sheet.Cells[row, col].Validation.InputMessage = message;
+        }
+
+        public void ClearAllErrors(int row)
+        {
+            sheet.Cells[row, "sizetype"].Validation.InputMessage = "";
+            sheet.Cells[row, "sizetype"].ClearFormats();
+            
+            sheet.Cells[row, "bag"].Validation.InputMessage = "";
+            sheet.Cells[row, "bag"].ClearFormats();
+            
+            sheet.Cells[row, "quantity"].Validation.InputMessage = "";
+            sheet.Cells[row, "quantity"].ClearFormats();
+            
+            sheet.Cells[row, "cluster"].Validation.InputMessage = "";
+            sheet.Cells[row, "cluster"].ClearFormats();
+            
+            sheet.Cells[row, "subcategory"].Validation.InputMessage = "";
+            sheet.Cells[row, "subcategory"].ClearFormats();
+            
+            sheet.Cells[row, "bmtarget"].Validation.InputMessage = "";
+            sheet.Cells[row, "bmtarget"].ClearFormats();
+            
+            sheet.Cells[row, "bodycode"].Validation.InputMessage = "";
+            sheet.Cells[row, "bodycode"].ClearFormats();
+            
+            sheet.Cells[row, "color"].Validation.InputMessage = "";
+            sheet.Cells[row, "color"].ClearFormats();            
         }
 
         public void GenerateHeader()
@@ -88,8 +121,6 @@ namespace MyntraExcelAddin.Service
             putDropDownData(ddd.color, ColumnName.color, ColumnNumber.color);
             putDropDownData(ddd.source, ColumnName.source, ColumnNumber.source);
         }
-
-
 
         private void putDropDownData(string[] data, string colname, int colnum)
         {
