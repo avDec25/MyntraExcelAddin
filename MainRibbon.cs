@@ -20,6 +20,7 @@ namespace MyntraExcelAddin
         DataExtractor extractor;
         DataValidator validator;
         EventManagement eventmanager;
+        ValueDeterminer determiner;
 
         public void MainRibbon_Load(object sender, RibbonUIEventArgs e)
         {
@@ -48,7 +49,8 @@ namespace MyntraExcelAddin
             decorator = new SheetDecorator(messenger, sheet, syssheet);
             validator = new DataValidator(sheet, messenger, decorator);
             extractor = new DataExtractor(sheet, validator);
-            eventmanager = new EventManagement(sheet, messenger);
+            determiner = new ValueDeterminer(sheet, messenger, validator);
+            eventmanager = new EventManagement(sheet, messenger, determiner);
             
             Validate.Enabled = true;
             UploadSheet.Enabled = true;
@@ -57,7 +59,7 @@ namespace MyntraExcelAddin
             decorator.SetDropDowns();
             decorator.GenerateHeader();
 
-            //emanager.SetEventHandlers();
+            eventmanager.SetEventHandlers();
         }
 
         private void Validate_Click(object sender, RibbonControlEventArgs e)

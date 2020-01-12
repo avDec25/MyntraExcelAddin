@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 
 namespace MyntraExcelAddin.Service
 {
-    class DataValidator
+    public class DataValidator
     {
         Excel._Worksheet sheet;
         public ExternalServiceMessenger messenger;
@@ -208,46 +208,37 @@ namespace MyntraExcelAddin.Service
                 {
                     if(vr.isValid.ContainsKey("sizetype") == true && !vr.isValid["sizetype"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.sizeType, "Rejected value of Sizetype");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.sizeType, Properties.Resources.ValidationErrorMessage_SizeType);
                     }
                     if (vr.isValid.ContainsKey("bag") == true && !vr.isValid["bag"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.brand, "Rejected Value by Validation Master BAG; " +
-                            "Please correct Brand, Article Type and Gender Combination.");
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.articleType, "Rejected Value by Validation Master BAG; " +
-                            "Please correct Brand, Article Type and Gender Combination.");
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.gender, "Rejected Value by Validation Master BAG; " +
-                            "Please correct Brand, Article Type and Gender Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.brand, Properties.Resources.ValidationErrorMessage_BAG);
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.articleType, Properties.Resources.ValidationErrorMessage_BAG);
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.gender, Properties.Resources.ValidationErrorMessage_BAG);
                     }
                     if (vr.isValid.ContainsKey("quantity") == true && !vr.isValid["quantity"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.quantity, "Rejected Value by Validation Master MoQ; " +
-                            "Please correct Brand, Article Type, Gender, Subcategory and Quantity Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.quantity, Properties.Resources.ValidationErrorMessage_Quantity);
                     }
                     if (vr.isValid.ContainsKey("cluster") == true && !vr.isValid["cluster"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.cluster, "Rejected Value by Validation Master Cluster; " +
-                            "Please correct Gender and Cluster Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.cluster, Properties.Resources.ValidationErrorMessage_Cluster);
                     }
                     if (vr.isValid.ContainsKey("subcategory") == true && !vr.isValid["subcategory"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.subcategory, "Rejected Value by Validation Master Subcategory; " +
-                            "Please correct Brand, Article Type, Gender and Subcategory Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.subcategory, Properties.Resources.ValidationErrorMessage_SubCategory);
                     }
                     if (vr.isValid.ContainsKey("bmtarget") == true && !vr.isValid["bmtarget"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.bmTarget, "Rejected Value by Validation Master BmTarget; " +
-                            "Please correct Brand, Article Type, Gender, Repeated and BM Target Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.bmTarget, Properties.Resources.ValidationErrorMessage_BMTarget);
                     }
                     if (vr.isValid.ContainsKey("bodycode") == true && !vr.isValid["bodycode"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.bodyCode, "Rejected Value by Validation Master BodyCode; " +
-                            "Please correct Article Type, Gender and BodyCode Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.bodyCode, Properties.Resources.ValidationErrorMessage_BodyCode);
                     }
                     if (vr.isValid.ContainsKey("color") == true && !vr.isValid["color"])
                     {
-                        decorator.HighlightErrorAtCell(row, ColumnNumber.color, "Rejected Value by Validation Master Color; " +
-                            "Please correct Gender and Color Combination.");
+                        decorator.HighlightErrorAtCell(row, ColumnNumber.color, Properties.Resources.ValidationErrorMessage_Color);
                     }
 
                 } else

@@ -59,5 +59,77 @@ namespace MyntraExcelAddin.Properties {
                 resourceCulture = value;
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected Value by Validation Master BAG; Please correct Brand, Article Type and Gender Combination..
+        /// </summary>
+        internal static string ValidationErrorMessage_BAG {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_BAG", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected Value by Validation Master BmTarget; Please correct Brand, Article Type, Gender, Repeated and BM Target Combination..
+        /// </summary>
+        internal static string ValidationErrorMessage_BMTarget {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_BMTarget", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected Value by Validation Master BodyCode; Please correct Article Type, Gender and BodyCode Combination..
+        /// </summary>
+        internal static string ValidationErrorMessage_BodyCode {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_BodyCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected Value by Validation Master Cluster; Please correct Gender and Cluster Combination..
+        /// </summary>
+        internal static string ValidationErrorMessage_Cluster {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_Cluster", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected Value by Validation Master Color; Please correct Gender and Color Combination..
+        /// </summary>
+        internal static string ValidationErrorMessage_Color {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_Color", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected Value by Validation Master MoQ; Please correct Brand, Article Type, Gender, Subcategory and Quantity Combination..
+        /// </summary>
+        internal static string ValidationErrorMessage_Quantity {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_Quantity", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected value of Sizetype.
+        /// </summary>
+        internal static string ValidationErrorMessage_SizeType {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_SizeType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Rejected Value by Validation Master Subcategory; Please correct Brand, Article Type, Gender and Subcategory Combination..
+        /// </summary>
+        internal static string ValidationErrorMessage_SubCategory {
+            get {
+                return ResourceManager.GetString("ValidationErrorMessage_SubCategory", resourceCulture);
+            }
+        }
     }
 }

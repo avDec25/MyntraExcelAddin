@@ -8,7 +8,6 @@ using System.Net.Sockets;
 using System.Windows.Forms;
 using MyntraExcelAddin.Entity;
 using System.Text;
-using System.Net.Mime;
 
 namespace MyntraExcelAddin.SystemObjects
 {
@@ -26,16 +25,37 @@ namespace MyntraExcelAddin.SystemObjects
             httpClient.Dispose();
         }
 
+        internal double RetrieveBMTargetValue(string brand, string articletype, string gender, bool repeated)
+        {
+            double bmtval = 0.0;
+            var bmtreq = new BMTargetRequestToService(brand, articletype, gender, repeated);
+            string payload = JsonConvert.SerializeObject(bmtreq);
+            System.Diagnostics.Debug.WriteLine(payload);
+            using (StringContent content = new StringContent(payload, Encoding.UTF8, MediaType))
+            {
+                Uri uri = new Uri(Addin.ServiceBaseURL + "determine/bmtarget");
+                using (var resp = httpClient.PostAsync(uri, content).Result)
+                {
+                    resp.EnsureSuccessStatusCode();
+                    bmtval = double.Parse(resp.Content.ReadAsStringAsync().Result);
+                }
+            }
+            return bmtval;
+        }
+
         public List<ValidatorResult> GetValidationInfo(List<Handover> handoverlist)
         {
             string validationResult;
 
             string payload = JsonConvert.SerializeObject(handoverlist);
-            StringContent content = new StringContent(payload, Encoding.UTF8, MediaType);
-            using (var resp = httpClient.PostAsync(Addin.ServiceBaseURL + "validator", content).Result)
+            using (StringContent content = new StringContent(payload, Encoding.UTF8, MediaType))
             {
-                resp.EnsureSuccessStatusCode();
-                validationResult = resp.Content.ReadAsStringAsync().Result;
+                Uri uri = new Uri(Addin.ServiceBaseURL + "validator");
+                using (var resp = httpClient.PostAsync(uri, content).Result)
+                {
+                    resp.EnsureSuccessStatusCode();
+                    validationResult = resp.Content.ReadAsStringAsync().Result;
+                }
             }
             List<ValidatorResult> reportcard = JsonConvert.DeserializeObject<List<ValidatorResult>>(validationResult);
             return reportcard;

@@ -20,34 +20,46 @@ namespace MyntraExcelAddin.Service
         public void HighlightErrorAtCell(int row, int col, string message)
         {
             sheet.Cells[row, col].Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.FromArgb(255, 148, 148));
+
+            // In case, the input message is to be displayed on a cell which previously has no validations enabled; 
+            // First Enable the validations:
+            sheet.Cells[row, col].Validation.Add(Excel.XlDVType.xlValidateInputOnly, Excel.XlDVAlertStyle.xlValidAlertStop, 
+                Excel.XlFormatConditionOperator.xlBetween, Type.Missing, Type.Missing);
+            sheet.Cells[row, col].Validation.IgnoreBlank = true;
             sheet.Cells[row, col].Validation.InputMessage = message;
         }
 
         public void ClearAllErrors(int row)
         {
-            sheet.Cells[row, "sizetype"].Validation.InputMessage = "";
-            sheet.Cells[row, "sizetype"].ClearFormats();
-            
-            sheet.Cells[row, "bag"].Validation.InputMessage = "";
-            sheet.Cells[row, "bag"].ClearFormats();
-            
-            sheet.Cells[row, "quantity"].Validation.InputMessage = "";
-            sheet.Cells[row, "quantity"].ClearFormats();
-            
-            sheet.Cells[row, "cluster"].Validation.InputMessage = "";
-            sheet.Cells[row, "cluster"].ClearFormats();
-            
-            sheet.Cells[row, "subcategory"].Validation.InputMessage = "";
-            sheet.Cells[row, "subcategory"].ClearFormats();
-            
-            sheet.Cells[row, "bmtarget"].Validation.InputMessage = "";
-            sheet.Cells[row, "bmtarget"].ClearFormats();
-            
-            sheet.Cells[row, "bodycode"].Validation.InputMessage = "";
-            sheet.Cells[row, "bodycode"].ClearFormats();
-            
-            sheet.Cells[row, "color"].Validation.InputMessage = "";
-            sheet.Cells[row, "color"].ClearFormats();            
+            sheet.Cells[row, ColumnNumber.sizeType].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.sizeType].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.brand].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.brand].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.articleType].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.articleType].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.gender].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.gender].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.quantity].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.quantity].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.cluster].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.cluster].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.subcategory].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.subcategory].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.bmTarget].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.bmTarget].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.bodyCode].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.bodyCode].ClearFormats();
+
+            sheet.Cells[row, ColumnNumber.color].Validation.InputMessage = "";
+            sheet.Cells[row, ColumnNumber.color].ClearFormats();
         }
 
         public void GenerateHeader()

@@ -7,13 +7,15 @@ namespace MyntraExcelAddin.Service
 {
     class EventManagement
     {
-        public Excel._Worksheet sheet;
+        Excel._Worksheet sheet;
         public ExternalServiceMessenger messenger;
+        ValueDeterminer determiner;
 
-        public EventManagement(Excel._Worksheet sheet, ExternalServiceMessenger messenger)
+        public EventManagement(Excel._Worksheet sheet, ExternalServiceMessenger messenger, ValueDeterminer determiner)
         {
             this.sheet = sheet;
             this.messenger = messenger;
+            this.determiner = determiner;
         }
 
         public void SetEventHandlers()
@@ -27,6 +29,7 @@ namespace MyntraExcelAddin.Service
             switch(Target.Column) {                
                 case ColumnNumber.repeated:
                     System.Diagnostics.Debug.WriteLine("Updated = repeated");
+                    PossiblyDetermineBmTarget(Target.Row);
                     break;
                 
                 case ColumnNumber.styleid:
@@ -39,14 +42,17 @@ namespace MyntraExcelAddin.Service
                 
                 case ColumnNumber.brand:
                     System.Diagnostics.Debug.WriteLine("Updated = brand");
+                    PossiblyDetermineBmTarget(Target.Row);
                     break;
                 
                 case ColumnNumber.gender:
                     System.Diagnostics.Debug.WriteLine("Updated = gender");
+                    PossiblyDetermineBmTarget(Target.Row);
                     break;
                 
                 case ColumnNumber.articleType:
                     System.Diagnostics.Debug.WriteLine("Updated = articleType");
+                    PossiblyDetermineBmTarget(Target.Row);
                     break;
                 
                 case ColumnNumber.quantity:
@@ -210,6 +216,11 @@ namespace MyntraExcelAddin.Service
                     break;
             }
             
+        }
+
+        private void PossiblyDetermineBmTarget(int row)
+        {
+            sheet.Cells[row, ColumnNumber.bmTarget].Value = determiner.DetermineBmTarget(row);
         }
 
         private string CellAddress(Excel.Range c)
