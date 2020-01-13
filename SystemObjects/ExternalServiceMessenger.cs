@@ -25,6 +25,43 @@ namespace MyntraExcelAddin.SystemObjects
             httpClient.Dispose();
         }
 
+        public void UpdateHandovers(List<Handover> handoverlist)
+        {
+            string payload = JsonConvert.SerializeObject(handoverlist);
+            System.Diagnostics.Debug.WriteLine(payload);
+            using (StringContent content = new StringContent(payload, Encoding.UTF8, MediaType))
+            {
+                Uri uri = new Uri(Addin.ServiceBaseURL + "handover/update");
+                using (var resp = httpClient.PostAsync(uri, content).Result)
+                {
+                    resp.EnsureSuccessStatusCode();                    
+                }
+            }
+        }
+        public List<long> SubmitHandovers(List<Handover> handoverlist)
+        {
+            List<long> ans = new List<long>();
+            HandoverCreateRequestToService request = new HandoverCreateRequestToService();
+            request.uploadType = "JSON";
+            request.allCtData = handoverlist;
+
+            string payload = JsonConvert.SerializeObject(request);
+            System.Diagnostics.Debug.WriteLine(payload);
+            using (StringContent content = new StringContent(payload, Encoding.UTF8, MediaType))
+            {
+                Uri uri = new Uri(Addin.ServiceBaseURL + "cthandover");
+                using (var resp = httpClient.PutAsync(uri, content).Result)
+                {
+                    //resp.EnsureSuccessStatusCode();         
+                    if(resp.StatusCode == HttpStatusCode.Created)
+                    {
+                        ans = JsonConvert.DeserializeObject<List<long>>(resp.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+            return ans;
+        }
+
         internal double RetrieveBMTargetValue(string brand, string articletype, string gender, bool repeated)
         {
             double bmtval = 0.0;

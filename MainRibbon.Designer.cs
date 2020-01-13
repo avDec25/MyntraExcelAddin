@@ -39,6 +39,7 @@
             this.GetTemplate = this.Factory.CreateRibbonButton();
             this.Validate = this.Factory.CreateRibbonButton();
             this.UploadSheet = this.Factory.CreateRibbonButton();
+            this.UpdateSheet = this.Factory.CreateRibbonButton();
             this.PlmTab.SuspendLayout();
             this.Essentials.SuspendLayout();
             this.SuspendLayout();
@@ -55,6 +56,7 @@
             this.Essentials.Items.Add(this.GetTemplate);
             this.Essentials.Items.Add(this.Validate);
             this.Essentials.Items.Add(this.UploadSheet);
+            this.Essentials.Items.Add(this.UpdateSheet);
             this.Essentials.Label = "Essentials";
             this.Essentials.Name = "Essentials";
             // 
@@ -79,6 +81,13 @@
             this.UploadSheet.Label = "Upload Sheet";
             this.UploadSheet.Name = "UploadSheet";
             this.UploadSheet.SuperTip = "Uploads Data of Current Sheet to the Service";
+            this.UploadSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UploadSheet_Click);
+            // 
+            // UpdateSheet
+            // 
+            this.UpdateSheet.Label = "Update";
+            this.UpdateSheet.Name = "UpdateSheet";
+            this.UpdateSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UpdateSheet_Click);
             // 
             // MainRibbon
             // 
@@ -101,6 +110,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton GetTemplate;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Validate;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton UploadSheet;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton UpdateSheet;
     }
 
     partial class ThisRibbonCollection

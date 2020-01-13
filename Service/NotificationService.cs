@@ -23,15 +23,15 @@ namespace MyntraExcelAddin.Service
             }
         }
 
-        public void ValidationComplete(string status)
+        public void ProcessComplete(string process, string status)
         {
             if(status.Equals("success"))
             {
-                Toast.Show("Validation Service", "Validation Complete.");
+                Toast.Show(process, "Success! No errors.");
             } 
             else
             {
-                Toast box = new Toast("Validation Service", "There are some Errors. Please correct them and try again.");
+                Toast box = new Toast(process, "Failed! There are some Errors. Please correct them and try again.");
                 box.ChangeBackColor(252, 3, 3);                
             }            
         }

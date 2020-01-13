@@ -314,10 +314,12 @@
     <Compile Include="Service\NotificationService.cs" />
     <Compile Include="Service\SheetDecorator.cs" />
     <Compile Include="Service\DataValidator.cs" />
+    <Compile Include="Service\SheetUpdater.cs" />
     <Compile Include="Service\ValueDeterminer.cs" />
     <Compile Include="SystemObjects\BMTargetRequestToService.cs" />
     <Compile Include="SystemObjects\DropDownData.cs" />
     <Compile Include="SystemObjects\ExternalServiceMessenger.cs" />
+    <Compile Include="SystemObjects\HandoverCreateRequestToService.cs" />
     <Compile Include="SystemObjects\UiElements\Toast.cs">
       <SubType>Form</SubType>
     </Compile>

@@ -135,6 +135,11 @@ namespace MyntraExcelAddin.Service
             handover.isWashReferenced = sheet.Cells[rowindex, ColumnNumber.isWashReferenced].Value;
             handover.pdpCatalogCallouts = sheet.Cells[rowindex, ColumnNumber.pdpCatalogCallouts].Value;
             handover.source = sheet.Cells[rowindex, ColumnNumber.source].Value;
+            
+            if(!validator.IsEmptyCell(rowindex, ColumnNumber.handoverId))
+            {
+                handover.handoverId = System.Convert.ToInt64(sheet.Cells[rowindex, ColumnNumber.handoverId].Value);                
+            }                
 
             return handover;
         }
@@ -185,7 +190,6 @@ namespace MyntraExcelAddin.Service
                 System.Diagnostics.Debug.WriteLine("handover.isWashReferenced = " + h.isWashReferenced);
                 System.Diagnostics.Debug.WriteLine("handover.pdpCatalogCallouts = " + h.pdpCatalogCallouts);
                 System.Diagnostics.Debug.WriteLine("handover.source = " + h.source);
-
             }
 
             return handoverList;

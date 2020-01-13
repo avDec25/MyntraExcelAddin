@@ -29,5 +29,6 @@ namespace MyntraExcelAddin.Entity
         public Boolean isWashReferenced;
         public String pdpCatalogCallouts;
         public String source;
+        public long handoverId;
     }
 }

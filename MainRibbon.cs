@@ -5,7 +5,6 @@ using Excel = Microsoft.Office.Interop.Excel;
 using MyntraExcelAddin.Service;
 using MyntraExcelAddin.SystemObjects;
 using MyntraExcelAddin.Entity;
-using System.Windows.Forms;
 
 namespace MyntraExcelAddin
 {
@@ -21,6 +20,7 @@ namespace MyntraExcelAddin
         DataValidator validator;
         EventManagement eventmanager;
         ValueDeterminer determiner;
+        SheetUpdater sheetUpdater;
 
         public void MainRibbon_Load(object sender, RibbonUIEventArgs e)
         {
@@ -49,46 +49,94 @@ namespace MyntraExcelAddin
             extractor = new DataExtractor(sheet, validator);
             determiner = new ValueDeterminer(sheet, messenger, validator);
             eventmanager = new EventManagement(sheet, messenger, determiner);
-            
+            sheetUpdater = new SheetUpdater(sheet);
+
+
             Validate.Enabled = true;
             UploadSheet.Enabled = true;
+            UpdateSheet.Enabled = false;
             // GetTemplate.Enabled = false;
 
             decorator.SetDropDowns();
             decorator.GenerateHeader();
-            decorator.AddFakeValidations();
+            decorator.AddFakeValidations(); // 1 time required to enable Validations.InputMessage box under a cell.
 
             eventmanager.SetEventHandlers();
         }
 
-        private void Validate_Click(object sender, RibbonControlEventArgs e)
+        private List<Handover> GetHandoverList()
         {
-            NotificationService notify = new NotificationService();
-
             Excel.Range last = sheet.Cells.SpecialCells(Excel.XlCellType.xlCellTypeLastCell, Type.Missing);
             Excel.Range range = sheet.get_Range("A1", last);
             int lastUsedRow = last.Row;
 
             List<int> rows = new List<int>();
-            for(int i = 2; i <= lastUsedRow; ++i)
+            for (int i = 2; i <= lastUsedRow; ++i)
             {
                 rows.Add(i);
             }
-            
-            List<Handover> handoverlist = extractor.ExtractHandovers(rows);
+
+            return extractor.ExtractHandovers(rows);
+        }
+
+        private void Validate_Click(object sender, RibbonControlEventArgs e)
+        {
+            NotificationService notify = new NotificationService();
+            List<Handover> handoverlist = GetHandoverList();
+
             if (handoverlist == null)
             {
-                notify.ValidationComplete("failed");
+                notify.ProcessComplete("Validation Service", "failed");
                 return;
             }
 
             if (validator.ValidateHandovers(handoverlist)) 
             {
-                notify.ValidationComplete("success");
+                notify.ProcessComplete("Validation Service", "success");
             }
             else
             {
-                notify.ValidationComplete("failed");
+                notify.ProcessComplete("Validation Service", "failed");
+            }
+        }
+
+        private void UploadSheet_Click(object sender, RibbonControlEventArgs e)
+        {
+            NotificationService notify = new NotificationService();
+            List<Handover> handoverlist = GetHandoverList();
+
+            if (handoverlist == null)
+            {
+                notify.ProcessComplete("Upload Service", "failed");
+                return;
+            }
+
+            List<long> savedHandoverIds = messenger.SubmitHandovers(handoverlist);            
+            if (savedHandoverIds.Count > 0)
+            {
+                sheetUpdater.HandoverIdsUpdate(savedHandoverIds);
+                UpdateSheet.Enabled = true;
+                notify.ProcessComplete("Upload Service", "success");                
+            }
+            else
+            {
+                notify.ProcessComplete("Upload Service", "failed");
+            }
+        }
+
+        private void UpdateSheet_Click(object sender, RibbonControlEventArgs e)
+        {
+            NotificationService notify = new NotificationService();
+            List<Handover> handoverlist = GetHandoverList();
+
+            if (validator.ValidateHandovers(handoverlist))
+            {
+                messenger.UpdateHandovers(handoverlist);
+                notify.ProcessComplete("Update Handovers", "success");
+            }
+            else
+            {
+                notify.ProcessComplete("Update Handovers", "failed");
             }
         }
     }
