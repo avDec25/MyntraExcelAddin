@@ -126,7 +126,7 @@ namespace MyntraExcelAddin.Service
 
             handover.dropName = sheet.Cells[rowindex, ColumnNumber.dropName].Value;
             handover.mrpRange = sheet.Cells[rowindex, ColumnNumber.mrpRange].Value;
-            //handover.bmTarget = sheet.Cells[rowindex, ColumnNumber.bmTarget].Value;
+            handover.bmTarget = sheet.Cells[rowindex, ColumnNumber.bmTarget].Value;
             handover.sizeType = sheet.Cells[rowindex, ColumnNumber.sizeType].Value;
             handover.bodyCode = sheet.Cells[rowindex, ColumnNumber.bodyCode].Value;
             handover.dataSource = sheet.Cells[rowindex, ColumnNumber.dataSource].Value;

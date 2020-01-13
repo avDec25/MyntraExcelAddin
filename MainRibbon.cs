@@ -24,9 +24,7 @@ namespace MyntraExcelAddin
 
         public void MainRibbon_Load(object sender, RibbonUIEventArgs e)
         {
-            messenger = new ExternalServiceMessenger();            
-            //app = Globals.ThisAddIn.Application;            
-            //app.SheetActivate += new Excel.AppEvents_SheetActivateEventHandler(Application_SheetActivate);
+            messenger = new ExternalServiceMessenger();
         }
 
         private void GetTemplate_Click(object sender, RibbonControlEventArgs e)
@@ -58,6 +56,7 @@ namespace MyntraExcelAddin
 
             decorator.SetDropDowns();
             decorator.GenerateHeader();
+            decorator.AddFakeValidations();
 
             eventmanager.SetEventHandlers();
         }
@@ -77,15 +76,20 @@ namespace MyntraExcelAddin
             }
             
             List<Handover> handoverlist = extractor.ExtractHandovers(rows);
-            notify.ValidationComplete();
-
             if (handoverlist == null)
             {
+                notify.ValidationComplete("failed");
                 return;
             }
-            
-            validator.ValidateHandovers(handoverlist);
-            notify.ValidationComplete();
+
+            if (validator.ValidateHandovers(handoverlist)) 
+            {
+                notify.ValidationComplete("success");
+            }
+            else
+            {
+                notify.ValidationComplete("failed");
+            }
         }
     }
 }

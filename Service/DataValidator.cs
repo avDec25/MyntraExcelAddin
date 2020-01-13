@@ -197,8 +197,9 @@ namespace MyntraExcelAddin.Service
             return (emptycols.Count == 0) ? false : true;
         }
 
-        public void ValidateHandovers(List<Handover> handoverlist)
+        public bool ValidateHandovers(List<Handover> handoverlist)
         {
+            bool allgood = true;
             List<ValidatorResult> result = messenger.GetValidationInfo(handoverlist);            
             int row = 2;
             foreach(ValidatorResult vr in result)
@@ -208,36 +209,44 @@ namespace MyntraExcelAddin.Service
                 {
                     if(vr.isValid.ContainsKey("sizetype") == true && !vr.isValid["sizetype"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.sizeType, Properties.Resources.ValidationErrorMessage_SizeType);
                     }
                     if (vr.isValid.ContainsKey("bag") == true && !vr.isValid["bag"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.brand, Properties.Resources.ValidationErrorMessage_BAG);
                         decorator.HighlightErrorAtCell(row, ColumnNumber.articleType, Properties.Resources.ValidationErrorMessage_BAG);
                         decorator.HighlightErrorAtCell(row, ColumnNumber.gender, Properties.Resources.ValidationErrorMessage_BAG);
                     }
                     if (vr.isValid.ContainsKey("quantity") == true && !vr.isValid["quantity"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.quantity, Properties.Resources.ValidationErrorMessage_Quantity);
                     }
                     if (vr.isValid.ContainsKey("cluster") == true && !vr.isValid["cluster"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.cluster, Properties.Resources.ValidationErrorMessage_Cluster);
                     }
                     if (vr.isValid.ContainsKey("subcategory") == true && !vr.isValid["subcategory"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.subcategory, Properties.Resources.ValidationErrorMessage_SubCategory);
                     }
                     if (vr.isValid.ContainsKey("bmtarget") == true && !vr.isValid["bmtarget"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.bmTarget, Properties.Resources.ValidationErrorMessage_BMTarget);
                     }
                     if (vr.isValid.ContainsKey("bodycode") == true && !vr.isValid["bodycode"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.bodyCode, Properties.Resources.ValidationErrorMessage_BodyCode);
                     }
                     if (vr.isValid.ContainsKey("color") == true && !vr.isValid["color"])
                     {
+                        allgood = false;
                         decorator.HighlightErrorAtCell(row, ColumnNumber.color, Properties.Resources.ValidationErrorMessage_Color);
                     }
 
@@ -247,6 +256,7 @@ namespace MyntraExcelAddin.Service
                 }
                 ++row;
             }
+            return allgood;
         }
     }
 }

@@ -10,6 +10,7 @@ namespace MyntraExcelAddin.Service
         public Excel._Worksheet sheet;
         public Excel._Worksheet syssheet;
         public ExternalServiceMessenger messenger;
+
         public SheetDecorator(ExternalServiceMessenger msngr, Excel._Worksheet xlsheet, Excel._Worksheet systemsheet)
         {
             messenger = msngr;
@@ -19,13 +20,7 @@ namespace MyntraExcelAddin.Service
 
         public void HighlightErrorAtCell(int row, int col, string message)
         {
-            sheet.Cells[row, col].Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.FromArgb(255, 148, 148));
-
-            // In case, the input message is to be displayed on a cell which previously has no validations enabled; 
-            // First Enable the validations:
-            sheet.Cells[row, col].Validation.Add(Excel.XlDVType.xlValidateInputOnly, Excel.XlDVAlertStyle.xlValidAlertStop, 
-                Excel.XlFormatConditionOperator.xlBetween, Type.Missing, Type.Missing);
-            sheet.Cells[row, col].Validation.IgnoreBlank = true;
+            sheet.Cells[row, col].Interior.Color = System.Drawing.ColorTranslator.ToOle(System.Drawing.Color.FromArgb(255, 148, 148));                        
             sheet.Cells[row, col].Validation.InputMessage = message;
         }
 
@@ -98,6 +93,45 @@ namespace MyntraExcelAddin.Service
             }
         }
 
+        public void AddFakeValidations()
+        {
+            for (int ci = ColumnNumber.repeated; ci <= ColumnNumber.handoverId; ++ci)
+            {
+                // In case, the input message is to be displayed on a cell which previously has no validations enabled; 
+                // First Enable the validations:
+                if (ci == ColumnNumber.fabric1_printCode ||
+                    ci == ColumnNumber.fabric1_quality ||
+                    ci == ColumnNumber.fabric1_baseColor ||
+                    ci == ColumnNumber.fabric2_printCode ||
+                    ci == ColumnNumber.fabric2_quality ||
+                    ci == ColumnNumber.fabric2_baseColor ||
+                    ci == ColumnNumber.fabric3_printCode ||
+                    ci == ColumnNumber.fabric3_quality ||
+                    ci == ColumnNumber.fabric3_baseColor ||
+                    ci == ColumnNumber.fabric4_printCode ||
+                    ci == ColumnNumber.fabric4_quality ||
+                    ci == ColumnNumber.fabric4_baseColor ||
+                    ci == ColumnNumber.fabric5_printCode ||
+                    ci == ColumnNumber.fabric5_quality ||
+                    ci == ColumnNumber.fabric5_baseColor ||
+                    ci == ColumnNumber.repeated ||
+                    ci == ColumnNumber.styleid ||
+                    ci == ColumnNumber.vanId ||
+                    ci == ColumnNumber.quantity ||
+                    ci == ColumnNumber.dropName ||
+                    ci == ColumnNumber.mrpRange ||
+                    ci == ColumnNumber.bmTarget ||
+                    ci == ColumnNumber.dataSourceDetails ||
+                    ci == ColumnNumber.isWashReferenced ||
+                    ci == ColumnNumber.pdpCatalogCallouts ||
+                    ci == ColumnNumber.handoverId)
+                {
+                    sheet.Columns[ci].Validation.Add(Excel.XlDVType.xlValidateInputOnly, Excel.XlDVAlertStyle.xlValidAlertInformation,
+                        Excel.XlFormatConditionOperator.xlBetween, Type.Missing, Type.Missing);
+                }
+            }
+        }
+
         public void SetDropDowns()
         {
             DropDownData ddd = messenger.GetDropDownData();
@@ -148,7 +182,7 @@ namespace MyntraExcelAddin.Service
                 Excel.XlDVType.xlValidateList,
                 Excel.XlDVAlertStyle.xlValidAlertStop,
                 Type.Missing,
-                "=" + syssheet.Name + "!$" + colname + "$2:$" + colname + "$" + i);
+                "=" + syssheet.Name + "!$" + colname + "$2:$" + colname + "$" + i);            
         }
     }
 }
