@@ -23,7 +23,7 @@ namespace MyntraExcelAddin.Service
             string brand;
             string articletype;
             string gender;
-            bool repeated;
+            string repeated;
 
             if(validator.IsEmptyCell(row, ColumnNumber.brand) ||
                 validator.IsEmptyCell(row, ColumnNumber.articleType) ||

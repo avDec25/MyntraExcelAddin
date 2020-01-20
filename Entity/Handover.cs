@@ -10,6 +10,7 @@ namespace MyntraExcelAddin.Entity
             fabrics = new List<Fabric>();
             bmTarget = 0;
         }
+        public String repeated;
         public String vanId;
         public String brand;
         public String articleType;

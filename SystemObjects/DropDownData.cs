@@ -8,6 +8,7 @@ namespace MyntraExcelAddin.SystemObjects
 {
     public class DropDownData
     {
+        public string[] repeated { get; set; }
         public string[] brand { get; set; }
         public string[] articletype { get; set; }
         public string[] gender { get; set; }

@@ -311,6 +311,7 @@
     <Compile Include="Service\Authentication.cs" />
     <Compile Include="Service\DataExtractor.cs" />
     <Compile Include="Service\EventManagement.cs" />
+    <Compile Include="Service\HandoverBrowser.cs" />
     <Compile Include="Service\NotificationService.cs" />
     <Compile Include="Service\SheetDecorator.cs" />
     <Compile Include="Service\DataValidator.cs" />
@@ -353,6 +354,13 @@
     <Analyzer Include="packages\Microsoft.NetCore.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetCore.CSharp.Analyzers.dll" />
     <Analyzer Include="packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Icons\linesheetSaveChanges.png" />
+    <Content Include="Icons\linesheetTemplate.png" />
+    <Content Include="Icons\linesheetUpload.png" />
+    <Content Include="Icons\linesheetValidate.png" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

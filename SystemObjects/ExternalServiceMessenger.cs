@@ -54,7 +54,7 @@ namespace MyntraExcelAddin.SystemObjects
                 {
                     //resp.EnsureSuccessStatusCode();         
                     if(resp.StatusCode == HttpStatusCode.Created)
-                    {
+                    { 
                         ans = JsonConvert.DeserializeObject<List<long>>(resp.Content.ReadAsStringAsync().Result);
                     }
                 }
@@ -62,7 +62,7 @@ namespace MyntraExcelAddin.SystemObjects
             return ans;
         }
 
-        internal double RetrieveBMTargetValue(string brand, string articletype, string gender, bool repeated)
+        internal double RetrieveBMTargetValue(string brand, string articletype, string gender, string repeated)
         {
             double bmtval = 0.0;
             var bmtreq = new BMTargetRequestToService(brand, articletype, gender, repeated);
@@ -73,7 +73,7 @@ namespace MyntraExcelAddin.SystemObjects
                 Uri uri = new Uri(Addin.ServiceBaseURL + "determine/bmtarget");
                 using (var resp = httpClient.PostAsync(uri, content).Result)
                 {
-                    resp.EnsureSuccessStatusCode();
+                        resp.EnsureSuccessStatusCode();
                     bmtval = double.Parse(resp.Content.ReadAsStringAsync().Result);
                 }
             }
@@ -98,13 +98,12 @@ namespace MyntraExcelAddin.SystemObjects
             return reportcard;
         }
 
-        public DropDownData GetDropDownData()
+        public DropDownData GetDropDownData(string dropdowns)
         {
             string responseString = "";
             try 
             {
-                var response = httpClient.GetAsync(Addin.ServiceBaseURL + "dropdown?names=" +
-                "brand,impression,articletype,gender,bodycode,cluster,color,subcategory,fpt,sizetype,datasource,source").Result;
+                var response = httpClient.GetAsync(Addin.ServiceBaseURL + "dropdown?names=" + dropdowns).Result;
                 
                 if (response.IsSuccessStatusCode)
                 {

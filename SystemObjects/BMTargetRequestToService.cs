@@ -11,9 +11,9 @@ namespace MyntraExcelAddin.SystemObjects
         public string brand;
         public string articleType;
         public string gender;        
-        public bool repeated;
+        public string repeated;
 
-        public BMTargetRequestToService(string b, string at, string g, bool r)
+        public BMTargetRequestToService(string b, string at, string g, string r)
         {
             brand = b;
             gender = g;

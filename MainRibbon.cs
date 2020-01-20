@@ -116,7 +116,7 @@ namespace MyntraExcelAddin
             {
                 sheetUpdater.HandoverIdsUpdate(savedHandoverIds);
                 UpdateSheet.Enabled = true;
-                notify.ProcessComplete("Upload Service", "success");                
+                notify.ProcessComplete("Upload Service", "success");
             }
             else
             {

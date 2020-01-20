@@ -20,6 +20,7 @@ namespace MyntraExcelAddin.Service
         private Handover ExtractHandoverFromRow(int rowindex)
         {
             Handover handover = new Handover();
+            handover.repeated = sheet.Cells[rowindex, ColumnNumber.repeated].Value;
             handover.vanId = sheet.Cells[rowindex, ColumnNumber.vanId].Value;
             handover.brand = sheet.Cells[rowindex, ColumnNumber.brand].Value;
             handover.articleType = sheet.Cells[rowindex, ColumnNumber.articleType].Value;

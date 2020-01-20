@@ -114,7 +114,6 @@ namespace MyntraExcelAddin.Service
                     ci == ColumnNumber.fabric5_printCode ||
                     ci == ColumnNumber.fabric5_quality ||
                     ci == ColumnNumber.fabric5_baseColor ||
-                    ci == ColumnNumber.repeated ||
                     ci == ColumnNumber.styleid ||
                     ci == ColumnNumber.vanId ||
                     ci == ColumnNumber.quantity ||
@@ -134,12 +133,13 @@ namespace MyntraExcelAddin.Service
 
         public void SetDropDowns()
         {
-            DropDownData ddd = messenger.GetDropDownData();
+            DropDownData ddd = messenger.GetDropDownData("repeated,brand,impression,articletype,gender,bodycode,cluster,color,subcategory,fpt,sizetype,datasource,source");
             if (ddd == null)
             {
                 return;
             }
 
+            putDropDownData(ddd.repeated, ColumnName.repeated, ColumnNumber.repeated);
             putDropDownData(ddd.brand, ColumnName.brand, ColumnNumber.brand);
             putDropDownData(ddd.gender, ColumnName.gender, ColumnNumber.gender);
             putDropDownData(ddd.articletype, ColumnName.articleType, ColumnNumber.articleType);
@@ -182,7 +182,7 @@ namespace MyntraExcelAddin.Service
                 Excel.XlDVType.xlValidateList,
                 Excel.XlDVAlertStyle.xlValidAlertStop,
                 Type.Missing,
-                "=" + syssheet.Name + "!$" + colname + "$2:$" + colname + "$" + i);            
+                "=" + syssheet.Name + "!$" + colname + "$2:$" + colname + "$" + i);
         }
     }
 }
