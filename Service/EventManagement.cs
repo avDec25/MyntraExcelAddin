@@ -212,7 +212,7 @@ namespace MyntraExcelAddin.Service
                     break;
                 
                 case ColumnNumber.handoverId:
-                    System.Diagnostics.Debug.WriteLine("Updated = handoverId");
+                    System.Diagnostics.Debug.WriteLine("Updated = id");
                     break;
             }
             

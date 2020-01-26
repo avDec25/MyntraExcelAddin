@@ -4,11 +4,13 @@ using Microsoft.Office.Tools.Ribbon;
 using Excel = Microsoft.Office.Interop.Excel;
 using MyntraExcelAddin.Service;
 using MyntraExcelAddin.SystemObjects;
+using MyntraExcelAddin.SystemObjects.UiElements;
 using MyntraExcelAddin.Entity;
+
 
 namespace MyntraExcelAddin
 {
-    public partial class MainRibbon : IDisposable
+    public partial class MainRibbon
     {
         public Excel._Workbook xlWorkbook;
         public Excel._Worksheet syssheet;
@@ -90,7 +92,7 @@ namespace MyntraExcelAddin
                 return;
             }
 
-            if (validator.ValidateHandovers(handoverlist)) 
+            if (validator.ValidateHandovers(handoverlist))
             {
                 notify.ProcessComplete("Validation Service", "success");
             }
@@ -111,7 +113,7 @@ namespace MyntraExcelAddin
                 return;
             }
 
-            List<long> savedHandoverIds = messenger.SubmitHandovers(handoverlist);            
+            List<long> savedHandoverIds = messenger.SubmitHandovers(handoverlist);
             if (savedHandoverIds.Count > 0)
             {
                 sheetUpdater.HandoverIdsUpdate(savedHandoverIds);
@@ -138,6 +140,12 @@ namespace MyntraExcelAddin
             {
                 notify.ProcessComplete("Update Handovers", "failed");
             }
+        }
+
+        private void Browse_Click(object sender, RibbonControlEventArgs e)
+        {
+            HandoverBrowser browser = new HandoverBrowser(messenger, sheetUpdater);
+            browser.Show();
         }
     }
 }

@@ -21,6 +21,8 @@ namespace MyntraExcelAddin.Entity
         public List<Fabric> fabrics;
         public String dropName;
         public String mrpRange;
+        public Double mrpRangeLower;
+        public Double mrpRangeUpper;
         public Double bmTarget;
         public String sizeType;
         public String bodyCode;
@@ -30,6 +32,6 @@ namespace MyntraExcelAddin.Entity
         public Boolean isWashReferenced;
         public String pdpCatalogCallouts;
         public String source;
-        public long handoverId;
+        public long id;
     }
 }

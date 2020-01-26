@@ -139,7 +139,7 @@ namespace MyntraExcelAddin.Service
             
             if(!validator.IsEmptyCell(rowindex, ColumnNumber.handoverId))
             {
-                handover.handoverId = System.Convert.ToInt64(sheet.Cells[rowindex, ColumnNumber.handoverId].Value);                
+                handover.id = System.Convert.ToInt64(sheet.Cells[rowindex, ColumnNumber.handoverId].Value);                
             }                
 
             return handover;

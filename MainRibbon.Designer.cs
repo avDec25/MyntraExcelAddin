@@ -41,21 +41,15 @@
             this.Validate = this.Factory.CreateRibbonButton();
             this.UploadSheet = this.Factory.CreateRibbonButton();
             this.UpdateSheet = this.Factory.CreateRibbonButton();
-            this.Browser = this.Factory.CreateRibbonGroup();
-            this.BrowserBack = this.Factory.CreateRibbonButton();
-            this.BrowserStart = this.Factory.CreateRibbonButton();
-            this.BrowserStop = this.Factory.CreateRibbonButton();
-            this.BrowserNext = this.Factory.CreateRibbonButton();
+            this.Browse = this.Factory.CreateRibbonButton();
             this.PlmTab.SuspendLayout();
             this.Essentials.SuspendLayout();
-            this.Browser.SuspendLayout();
             this.SuspendLayout();
             // 
             // PlmTab
             // 
             this.PlmTab.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.PlmTab.Groups.Add(this.Essentials);
-            this.PlmTab.Groups.Add(this.Browser);
             this.PlmTab.Label = "MFB-PLM";
             this.PlmTab.Name = "PlmTab";
             // 
@@ -65,6 +59,7 @@
             this.Essentials.Items.Add(this.Validate);
             this.Essentials.Items.Add(this.UploadSheet);
             this.Essentials.Items.Add(this.UpdateSheet);
+            this.Essentials.Items.Add(this.Browse);
             this.Essentials.Label = "LineSheet";
             this.Essentials.Name = "Essentials";
             // 
@@ -105,46 +100,11 @@
             this.UpdateSheet.ShowImage = true;
             this.UpdateSheet.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.UpdateSheet_Click);
             // 
-            // Browser
+            // Browse
             // 
-            this.Browser.Items.Add(this.BrowserBack);
-            this.Browser.Items.Add(this.BrowserStart);
-            this.Browser.Items.Add(this.BrowserStop);
-            this.Browser.Items.Add(this.BrowserNext);
-            this.Browser.Label = "Handover Browser";
-            this.Browser.Name = "Browser";
-            // 
-            // BrowserBack
-            // 
-            this.BrowserBack.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BrowserBack.Image = ((System.Drawing.Image)(resources.GetObject("BrowserBack.Image")));
-            this.BrowserBack.Label = "Back";
-            this.BrowserBack.Name = "BrowserBack";
-            this.BrowserBack.ShowImage = true;
-            // 
-            // BrowserStart
-            // 
-            this.BrowserStart.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BrowserStart.Image = ((System.Drawing.Image)(resources.GetObject("BrowserStart.Image")));
-            this.BrowserStart.Label = "Start";
-            this.BrowserStart.Name = "BrowserStart";
-            this.BrowserStart.ShowImage = true;
-            // 
-            // BrowserStop
-            // 
-            this.BrowserStop.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BrowserStop.Image = ((System.Drawing.Image)(resources.GetObject("BrowserStop.Image")));
-            this.BrowserStop.Label = "Stop";
-            this.BrowserStop.Name = "BrowserStop";
-            this.BrowserStop.ShowImage = true;
-            // 
-            // BrowserNext
-            // 
-            this.BrowserNext.ControlSize = Microsoft.Office.Core.RibbonControlSize.RibbonControlSizeLarge;
-            this.BrowserNext.Image = ((System.Drawing.Image)(resources.GetObject("BrowserNext.Image")));
-            this.BrowserNext.Label = "Next";
-            this.BrowserNext.Name = "BrowserNext";
-            this.BrowserNext.ShowImage = true;
+            this.Browse.Label = "Browse Handovers";
+            this.Browse.Name = "Browse";
+            this.Browse.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Browse_Click);
             // 
             // MainRibbon
             // 
@@ -156,8 +116,6 @@
             this.PlmTab.PerformLayout();
             this.Essentials.ResumeLayout(false);
             this.Essentials.PerformLayout();
-            this.Browser.ResumeLayout(false);
-            this.Browser.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -170,11 +128,7 @@
         internal Microsoft.Office.Tools.Ribbon.RibbonButton Validate;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton UploadSheet;
         internal Microsoft.Office.Tools.Ribbon.RibbonButton UpdateSheet;
-        internal Microsoft.Office.Tools.Ribbon.RibbonGroup Browser;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BrowserBack;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BrowserStart;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BrowserStop;
-        internal Microsoft.Office.Tools.Ribbon.RibbonButton BrowserNext;
+        internal Microsoft.Office.Tools.Ribbon.RibbonButton Browse;
     }
 
     partial class ThisRibbonCollection

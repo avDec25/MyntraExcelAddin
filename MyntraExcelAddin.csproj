@@ -34,8 +34,12 @@
     <AssemblyName>MyntraExcelAddin</AssemblyName>
     <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <DefineConstants>VSTO40</DefineConstants>
+    <IsWebBootstrapper>False</IsWebBootstrapper>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <PublishUrl>publish\</PublishUrl>
+    <PublishUrl>C:\deploy\mfbplmaddin\</PublishUrl>
     <InstallUrl />
     <TargetCulture>en</TargetCulture>
     <ApplicationVersion>1.0.0.0</ApplicationVersion>
@@ -43,21 +47,22 @@
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>7</UpdateInterval>
     <UpdateIntervalUnits>days</UpdateIntervalUnits>
-    <IsWebBootstrapper>False</IsWebBootstrapper>
     <ProductName>MyntraExcelAddin</ProductName>
     <PublisherName />
     <SupportUrl />
     <FriendlyName>MyntraExcelAddin</FriendlyName>
     <OfficeApplicationDescription />
     <LoadBehavior>3</LoadBehavior>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>
       <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.8">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.8 %28x86 and x64%29</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
@@ -293,6 +298,9 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <EmbeddedResource Include="SystemObjects\UiElements\HandoverBrowser.resx">
+      <DependentUpon>HandoverBrowser.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="SystemObjects\UiElements\Toast.resx">
       <DependentUpon>Toast.cs</DependentUpon>
     </EmbeddedResource>
@@ -311,7 +319,6 @@
     <Compile Include="Service\Authentication.cs" />
     <Compile Include="Service\DataExtractor.cs" />
     <Compile Include="Service\EventManagement.cs" />
-    <Compile Include="Service\HandoverBrowser.cs" />
     <Compile Include="Service\NotificationService.cs" />
     <Compile Include="Service\SheetDecorator.cs" />
     <Compile Include="Service\DataValidator.cs" />
@@ -321,6 +328,13 @@
     <Compile Include="SystemObjects\DropDownData.cs" />
     <Compile Include="SystemObjects\ExternalServiceMessenger.cs" />
     <Compile Include="SystemObjects\HandoverCreateRequestToService.cs" />
+    <Compile Include="SystemObjects\HandoverTableView.cs" />
+    <Compile Include="SystemObjects\UiElements\HandoverBrowser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="SystemObjects\UiElements\HandoverBrowser.Designer.cs">
+      <DependentUpon>HandoverBrowser.cs</DependentUpon>
+    </Compile>
     <Compile Include="SystemObjects\UiElements\Toast.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -355,7 +369,6 @@
     <Analyzer Include="packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.Analyzers.dll" />
     <Analyzer Include="packages\Microsoft.NetFramework.Analyzers.2.9.8\analyzers\dotnet\cs\Microsoft.NetFramework.CSharp.Analyzers.dll" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Content Include="Icons\linesheetSaveChanges.png" />
     <Content Include="Icons\linesheetTemplate.png" />
@@ -373,7 +386,7 @@
     <ManifestKeyFile>MyntraExcelAddin_TemporaryKey.pfx</ManifestKeyFile>
   </PropertyGroup>
   <PropertyGroup>
-    <ManifestCertificateThumbprint>86BFA69B25AD60D633CE447E6A4EDC3BD47A952A</ManifestCertificateThumbprint>
+    <ManifestCertificateThumbprint>BD99132F8B2C1F0F134F5254AC471CFF9D67DCCD</ManifestCertificateThumbprint>
   </PropertyGroup>
   <!-- Include the build rules for a C# project. -->
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
@@ -383,7 +396,7 @@
   <ProjectExtensions>
     <VisualStudio>
       <FlavorProperties GUID="{BAA0C2D2-18E2-41B9-852F-F413020CAA33}">
-        <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\15.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
+        <ProjectProperties HostName="Excel" HostPackage="{29A7B9D7-A7F1-4328-8EF0-6B2D1A56B2C1}" OfficeVersion="15.0" VstxVersion="4.0" ApplicationType="Excel" Language="cs" TemplatesPath="" DebugInfoExeName="#Software\Microsoft\Office\16.0\Excel\InstallRoot\Path#excel.exe" DebugInfoCommandLine="/x" AddItemTemplatesGuid="{51063C3A-E220-4D12-8922-BDA915ACD783}" />
         <Host Name="Excel" GeneratedCodeNamespace="MyntraExcelAddin" IconIndex="0">
           <HostItem Name="ThisAddIn" Code="ThisAddIn.cs" CanonicalName="AddIn" CanActivate="false" IconIndex="1" Blueprint="ThisAddIn.Designer.xml" GeneratedCode="ThisAddIn.Designer.cs" />
         </Host>

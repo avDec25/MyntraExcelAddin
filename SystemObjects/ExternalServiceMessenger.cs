@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using MyntraExcelAddin.Constant;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System.Net.Http;
 using System.Net;
 using System.Net.Sockets;
 using System.Windows.Forms;
 using MyntraExcelAddin.Entity;
 using System.Text;
+using System.Diagnostics;
 
 namespace MyntraExcelAddin.SystemObjects
 {
@@ -25,19 +27,76 @@ namespace MyntraExcelAddin.SystemObjects
             httpClient.Dispose();
         }
 
+        public List<Handover> GetHandovers(string hids)
+        {
+            string responseString = "";
+            try
+            {
+                var response = httpClient.GetAsync(Addin.ServiceBaseURL + "addin/cthandover?hids=" + hids).Result;
+
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseContent = response.Content;
+                    responseString = responseContent.ReadAsStringAsync().Result;
+                }
+                return JsonConvert.DeserializeObject<List<Handover>>(responseString);
+            }
+            catch (AggregateException ae)
+            {
+                ae.Handle(ex => {
+                    if (ex.InnerException.InnerException is SocketException)
+                        MessageBox.Show(ex.InnerException.InnerException.Message + "\n\nFailed to Download Handovers", "External Service Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else if (ex.InnerException is WebException)
+                        MessageBox.Show(ex.InnerException.Message + "\n\nFailed to Download Handovers", "External Service Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    else if (ex is HttpRequestException)
+                        MessageBox.Show(ex.Message + "\n\nFailed to Download Handovers", "External Service Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return ex is HttpRequestException;
+                });
+
+                return null;
+            }
+        }
+
+        public Tuple<List<HandoverTableView>,uint> GetFilteredHandovers(Dictionary<string, List<string>> query, uint page, uint size)
+        {
+            List<HandoverTableView> handoverlist = new List<HandoverTableView>();
+
+            JObject jResponse = new JObject();
+
+            string payload = JsonConvert.SerializeObject(query);
+            System.Diagnostics.Debug.WriteLine(payload);
+            using (StringContent content = new StringContent(payload, Encoding.UTF8, MediaType))
+            {
+                Uri uri = new Uri(Addin.ServiceBaseURL + "handover/filter?page=" + page + "&size="+ size);
+
+                using (var resp = httpClient.PostAsync(uri, content).Result)
+                {
+                    if (resp.StatusCode == HttpStatusCode.OK)
+                    {
+                        jResponse = JObject.Parse(resp.Content.ReadAsStringAsync().Result);
+                    }
+                }
+            }
+
+            handoverlist = JsonConvert.DeserializeObject<List<HandoverTableView>>(jResponse.GetValue("content").ToString());
+            uint totalpages = jResponse.GetValue("totalPages").ToObject<uint>();
+            return Tuple.Create(handoverlist,totalpages);
+        }
+
         public void UpdateHandovers(List<Handover> handoverlist)
         {
             string payload = JsonConvert.SerializeObject(handoverlist);
             System.Diagnostics.Debug.WriteLine(payload);
             using (StringContent content = new StringContent(payload, Encoding.UTF8, MediaType))
             {
-                Uri uri = new Uri(Addin.ServiceBaseURL + "handover/update");
+                Uri uri = new Uri(Addin.ServiceBaseURL + "addin/handover/update");
                 using (var resp = httpClient.PostAsync(uri, content).Result)
                 {
                     resp.EnsureSuccessStatusCode();                    
                 }
             }
         }
+
         public List<long> SubmitHandovers(List<Handover> handoverlist)
         {
             List<long> ans = new List<long>();
@@ -70,10 +129,10 @@ namespace MyntraExcelAddin.SystemObjects
             System.Diagnostics.Debug.WriteLine(payload);
             using (StringContent content = new StringContent(payload, Encoding.UTF8, MediaType))
             {
-                Uri uri = new Uri(Addin.ServiceBaseURL + "determine/bmtarget");
+                Uri uri = new Uri(Addin.ServiceBaseURL + "addin/determine/bmtarget");
                 using (var resp = httpClient.PostAsync(uri, content).Result)
                 {
-                        resp.EnsureSuccessStatusCode();
+                    resp.EnsureSuccessStatusCode();
                     bmtval = double.Parse(resp.Content.ReadAsStringAsync().Result);
                 }
             }
@@ -109,7 +168,7 @@ namespace MyntraExcelAddin.SystemObjects
                 {
                     var responseContent = response.Content;
 
-                    // by calling .Result you are synchronously reading the result
+                    // by calling .Result we synchronously read the result
                     responseString = responseContent.ReadAsStringAsync().Result;
                 }
                 return JsonConvert.DeserializeObject<DropDownData>(responseString);
